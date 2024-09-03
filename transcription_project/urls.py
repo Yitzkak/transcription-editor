@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from api.views import AudioFileViewSet
 from api.views import upload_view
+from api.views import TranscriptionListCreateView, TranscriptionDetailView
 
 router = DefaultRouter()
 router.register(r'audio', AudioFileViewSet)
@@ -10,7 +11,9 @@ router.register(r'audio', AudioFileViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-     path('upload/', upload_view, name='upload'),
+    path('upload/', upload_view, name='upload'),
+    path('api/transcriptions/', TranscriptionListCreateView.as_view(), name='transcription-list-create'),
+    path('api/transcriptions/<int:pk>/', TranscriptionDetailView.as_view(), name='transcription-detail'),
 ]
 
 from django.conf import settings
