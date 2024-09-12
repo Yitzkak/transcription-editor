@@ -9,4 +9,4 @@ class AudioFileSerializer(serializers.ModelSerializer):
 class TranscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcription
-        fields = ['id', 'original_audio_filename', 'audio_file', 'transcription_text', 'created_at', 'updated_at']
+        fields = ['id', 'audio_file', 'transcription_text', 'created_at', 'updated_at']

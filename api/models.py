@@ -1,5 +1,11 @@
 ##models.py
 from django.db import models
+from django.core.exceptions import ValidationError
+
+def validate_audio_file(file):
+    valid_mime_types = ['audio/mpeg', 'audio/wav', 'audio/x-wav']
+    if file.content_type not in valid_mime_types:
+        raise ValidationError('Unsupported file type.')
 
 class AudioFile(models.Model):
     file = models.FileField(upload_to='audio/')
