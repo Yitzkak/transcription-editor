@@ -84,7 +84,7 @@ const App = () => {
         <div className="app-container"> 
             {/* Header */}
             <header className="app-header">
-                <div className="logo">TranscriptoAI</div>
+                <div className="logo">I</div>
                 <button className="upload-btn">Upload SVG</button>
             </header>
 
