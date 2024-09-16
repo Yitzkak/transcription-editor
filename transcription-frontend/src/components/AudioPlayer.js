@@ -34,7 +34,86 @@ const AudioPlayer = ({ audioUrl, increaseFontSize, decreaseFontSize, onAddTimest
         if (audioUrl) {
             wavesurferRef.current.load(audioUrl);
         }
+
+
+        // Create an element to display the time
+    const hoverTime = document.createElement('div');
+    hoverTime.style.position = 'absolute';
+    hoverTime.style.backgroundColor = '#333';
+    hoverTime.style.color = '#fff';
+    hoverTime.style.padding = '5px';
+    hoverTime.style.borderRadius = '4px';
+    hoverTime.style.display = 'none';  // Hide initially
+    document.body.appendChild(hoverTime);
+
+    // Add an event listener for mouse movement over the waveformRef container
+    const handleMouseMove = (e) => {
+        const rect = waveformRef.current.getBoundingClientRect();  // Get bounding box of the waveform container
+        const x = e.clientX - rect.left;  // Calculate mouse position relative to the waveform
+        const duration = wavesurferRef.current.getDuration();  // Get audio duration
+        const percent = x / rect.width;  // Calculate percent position of the mouse on the waveform
+        const time = percent * duration;  // Convert percentage to time
+
+        // Format time into MM:SS or HH:MM:SS
+        const formattedTime = formatTime(time);
+
+        // Position and display hover time
+        hoverTime.style.left = `${e.pageX + 10}px`;
+        hoverTime.style.top = `${e.pageY + 10}px`;
+        hoverTime.style.display = 'block';
+        hoverTime.innerText = formattedTime;
+    };
+
+    const handleMouseOut = () => {
+        hoverTime.style.display = 'none';  // Hide the hover time when mouse leaves the waveform
+    };
+
+    // Attach event listeners to the waveform container
+    if (waveformRef.current) {
+        waveformRef.current.addEventListener('mousemove', handleMouseMove);
+        waveformRef.current.addEventListener('mouseout', handleMouseOut);
+    }
+
+    // Get the div where you want to display the current time
+    const timeDisplayContainer = document.getElementById('current-time-display');
+
+    // Create an element to display the current time
+    const currentTimeDisplay = document.createElement('div');
+    currentTimeDisplay.style.fontSize = '16px';
+    currentTimeDisplay.style.marginTop = '10px';
+
+    // Append the current time display element to the specific div
+    timeDisplayContainer.appendChild(currentTimeDisplay);
+
+    // Event listener to update the time as the audio is playing
+    wavesurferRef.current.on('audioprocess', (currentTime) => {
+        // Format the current time to HH:MM:SS
+        const formattedTime = formatTime(currentTime);
+
+        // Update the DOM element with the formatted time
+        currentTimeDisplay.innerText = formattedTime;
+    });
+
+
+    // Cleanup event listeners on unmount
+    return () => {
+        if (waveformRef.current) {
+            waveformRef.current.removeEventListener('mousemove', handleMouseMove);
+            waveformRef.current.removeEventListener('mouseout', handleMouseOut);
+        }
+        document.body.removeChild(hoverTime);  // Clean up the hover time element
+    }
+
     }, [audioUrl]);
+
+    // Format time in HH:MM:SS or MM:SS format
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        const timeString = h > 0 ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : `${m}:${s.toString().padStart(2, '0')}`;
+        return timeString;
+    }
 
     useEffect(() => {
         initializeWavesurfer();
@@ -46,6 +125,8 @@ const AudioPlayer = ({ audioUrl, increaseFontSize, decreaseFontSize, onAddTimest
             }
         };
     }, [initializeWavesurfer]);
+
+    
 
     const toggleLoop = () => {
         setIsLooping(!isLooping);
@@ -158,6 +239,7 @@ const AudioPlayer = ({ audioUrl, increaseFontSize, decreaseFontSize, onAddTimest
                     <option value="2">2x</option>
                 </select>
             </div>
+            <div id="current-time-display"></div>
         </div>
     );
 };
