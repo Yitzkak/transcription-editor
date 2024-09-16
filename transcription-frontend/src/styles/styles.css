@@ -1,0 +1,91 @@
+/* styles.css */
+
+/* AudioPlayer Component Styling */
+.audio-player-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.audio-player-container button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.audio-player-container button:hover {
+    background-color: #357ABD;
+}
+
+/* TranscriptEditor Component Styling */
+.transcript-editor-container {
+    margin-top: 20px;
+}
+
+.transcript-editor-container textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.transcript-editor-container button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.transcript-editor-container button:hover {
+    background-color: #357ABD;
+}
+
+.audio-controls {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audio-controls label {
+    margin-right: 10px;
+}
+
+.audio-controls input[type="range"] {
+    margin: 0 10px;
+}
+
+.audio-controls select {
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.controls-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.controls-row button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.controls-row button:hover {
+    background-color: #357ABD;
+}
