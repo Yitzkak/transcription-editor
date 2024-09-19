@@ -68,7 +68,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://intelliscribe.vercel.app/",
+    "https://intelliscribe.vercel.app",
 ]
 
 ROOT_URLCONF = "transcription_project.urls"
