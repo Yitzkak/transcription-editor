@@ -24,3 +24,4 @@ psycopg2==2.9.9
 whitenoise==6.7.0
 dj-database-url==2.2.0
 typing-extensions==4.12.2
+python-dotenv==1.0.0
