@@ -7,6 +7,7 @@ const TranscriptEditor = ({ originalFilename, fontSize, transcription, setTransc
     
     const [transcriptionId, setTranscriptionId] = useState(null);
     const textareaRef = useRef(null); // Create a reference for the textarea
+    const apiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
     useEffect(() => {
         loadTranscription();
@@ -21,8 +22,8 @@ const TranscriptEditor = ({ originalFilename, fontSize, transcription, setTransc
             console.log("originalFilename", originalFilename);
             console.log("transcription", transcription)
             const response = transcriptionId
-                ? await axios.put(`http://127.0.0.1:8000/api/transcriptions/${transcriptionId}/`, { transcription_text: transcription })
-                : await axios.post('http://127.0.0.1:8000/api/transcriptions/', { audio_file: originalFilename, transcription_text: transcription });
+                ? await axios.put(`${apiUrl}/api/transcriptions/${transcriptionId}/`, { transcription_text: transcription })
+                : await axios.post(`${apiUrl}/api/transcriptions/`, { audio_file: originalFilename, transcription_text: transcription });
             console.log("Response Idea:", response);
             setTranscriptionId(response.data.id);
             
@@ -33,7 +34,7 @@ const TranscriptEditor = ({ originalFilename, fontSize, transcription, setTransc
 
     const loadTranscription = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/transcriptions/?audio_file=${originalFilename}`);
+            const response = await axios.get(`${apiUrl}/api/transcriptions/?audio_file=${originalFilename}`);
 
             if (response.data.length > 0) {
                 const existingTranscription = response.data[0];
