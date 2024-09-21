@@ -14,6 +14,7 @@ const App = () => {
     const [loading, setLoading] = useState(false);  // Loading state
     const [fontSize, setFontSize] = useState(14);
     const transcriptRef = useRef(null); // Create a ref for the TranscriptEditor component
+    const apiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 
     const handleFileChange = (event) => {
@@ -32,7 +33,7 @@ const App = () => {
         setLoading(true);  // Set loading to true when upload starts
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/audio/', formData, {
+            const response = await axios.post(`${apiUrl}/api/audio/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
