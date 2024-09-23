@@ -1,23 +1,29 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11.9-bullseye
+FROM python:3.11-slim
 
-# Set the working directory in the container
+# Create a group and user to run the application
+RUN groupadd -r myappgroup && useradd -r -g myappgroup myappuser
+
+# Set the working directory inside the container
 WORKDIR /code
 
-# Copy the requirements file to the working directory
-COPY requirements.txt /code/
-
-# Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libpq-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container at /code
-COPY . /code/
+COPY . /code
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Install the dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8000 to the outside world
-EXPOSE 8000
+# Change ownership of the code directory to the new user
+RUN chown -R myappuser:myappgroup /code
+
+# Switch to the non-root user
+USER myappuser
 
 # Run the Django server
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "transcription_project.wsgi:application"]
+CMD ["gunicorn", "transcription_project.wsgi:application", "--bind", "0.0.0.0:8000"]
