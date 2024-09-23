@@ -109,3 +109,7 @@ def check_task_status(request, task_id):
         }
     
     return JsonResponse(response)
+
+
+def tpage(request):
+    return render(request, 'tpage.html')

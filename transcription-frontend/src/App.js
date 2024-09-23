@@ -86,7 +86,11 @@ const App = () => {
             {/* Header */}
             <header className="app-header">
                 <div className="logo">IntelliScribe</div>
-                <button className="upload-btn">Upload SVG</button>
+                <button className="upload-btn">
+                    <a href="{% url 'tpage' %}">
+                        upload
+                    </a>
+                </button>
             </header>
 
             {/* Content Area */}
